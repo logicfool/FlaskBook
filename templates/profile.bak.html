@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Profile- {{current_user.firstname}}</title>
+<script>
+function showedit() {
+  var x = document.getElementById("edit_info");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function showpass() {
+  var x = document.getElementById("edit_pass");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<script>
+var x=document.getElementById("edit_info");
+x.style.display = "none";
+</script>
+<div class="container" align="center">
+  <table>
+    <tr valign="top">
+      
+        <td><img src='{{current_user.profile_pic}}' style="height: 110px;width: 100px;"></td>
+        <td><h1>User: {{ current_user.username }}</h1></td>
+    </tr>
+</table>
+<hr>
+    <h1>Full Name: {{current_user.firstname}} {{current_user.lastname}}</h1>
+    {% if current_user.about_me != '' %}
+    <h1>About : {{current_user.about_me}}</h1>
+    {% else %}
+    <h1>About : N/A</h1>
+    {% endif %}
+    <h1>Email: {{current_user.email}}</h1>
+    <h1>Gender: {{current_user.gender}}</h1>
+    <h1>User ID: {{current_user.id}}</h1>
+    <button class="btn btn-info" onclick="showedit()">Edit profile</button>
+    <button class="btn btn-info" onclick="showpass()">Change Password</button><br><br>
+</div>
+
+<div class="container" align="center" id="edit_info" style="display:none">
+<form class="form-group" action="/profile/edit/{{current_user.id}}" method="POST" enctype="multipart/form-data">
+Username : <input type="text" class="form-control" value={{current_user.username}} name="username"><br>
+First Name : <input type="text" class="form-control" value={{current_user.firstname}} name="firstname"><br>
+Last Name : <input type="text" class="form-control" value={{current_user.lastname}} name="lastname"><br>
+Email : <input type="email" class="form-control" value={{current_user.email}} name="email"><br>
+Profile Pic : <input type="file" class="form-control" name="profile_pic" value="{{current_user.profile_pic}}"><br>
+About Me : <input type="text" class="form-control" name="about_me" value="{{current_user.about_me}}"><br>
+<input type="submit" value="Update Info" class="btn btn-success" >
+</form>
+</div>
+
+<div class="container" align="center" id="edit_pass" style="display:none">
+<form class="form-group" action="/profile/passchange/{{current_user.id}}" method="POST">
+Current Password : <input type="password" class="form-control" name="pass1">
+New Password : <input type="password" class="form-control" name="pass2">
+Confirm New Password : <input type="password" class="form-control" name="pass3"><br>
+<input type="submit" value="Update Password" class="btn btn-success" >
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+    <div id="target">    
+    <hr>
+    <p align="center" style="font-size: 200%;">Our Diary! Its Personal
+    </p>
+    
+    <form action="/dashboard/new" method="POST" class="form-group border border-light p-5" align="center">
+        Title: <input type="text" name="title" id="title" class="form-control mb-4" required>
+        <br>
+        Post: <textarea class=" form-control rounded-0" style="max-width: 100%;" name="content" id="content" required></textarea>
+        <br>
+        Author: <input type="text" name="author" class="form-control hidden" value="{{current_user.firstname}} {{current_user.lastname}}" required> <br>
+        <input type="submit" value="Post" class="btn btn-info btn-block my-4">
+    </form>
+    </hr>
+    </div>
+    {% endblock %}
+    
+    

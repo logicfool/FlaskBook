@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Dashboard</title> 
+{% endblock %}
+
+{% block body %}
+
+
+<!--
+                <div class="col-sm-8">
+                    <ul class="header-menu pull-right">
+                        <li><a href="#" class="">Requests</a></li>
+                        <li><a href="#" class="">Messages</a></li>
+                        <li><a href="#" class="">Notifications</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="container-fluid">
+            <div class="col-sm-3 left-sidebar">
+                <ul>
+                    <li><a href="./dashboard.html" class="active">News Feed</a></li>
+                    <li><a href="./settings.html" class="active">Settings</a></li>
+                    <li><a href="./index.html">Logout</a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-6">
+                {% for post in posts %}
+                <div class="post col-sm-12" id="post_1">
+                    <div class="row post-heading">
+                        <div class="col-sm-12">
+                            <a href="profile.html">
+                                <img src="assets/imgs/2.jpg" class="profile-picture pull-left"/>
+                                &nbsp;
+                                <span class="post-user-name">{{post.author}}</span><br/>
+                                &nbsp;
+                                <small class="post-date text-mute">{{post.date}}</small>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row post-body">
+                        <div class="col-sm-12">
+                            {{post.content}}
+                        </div>
+                    </div>
+                    <div class="row post-action">
+                        <ul class="post-action-menu">
+                            <li><a href="javascript:void(0);" class="text-mute" onclick="like(1);">Like</a></li>
+                            <li><a href="javascript:void(0);" class="text-mute" onclick="share(1);">Share</a></li>
+                            <li><a href="javascript:void(0);" class="text-mute" onclick="comment(1);">Comment</a></li>
+                            <li class="pull-right"><a href="#" class="text-mute"><span id="post_like_count_1">2142</span> Likes</a></li>
+                            <li class="pull-right"><a href="#" class="text-mute"><span id="post_comment_count_1">2172</span> Comments</a></li>
+                            <li class="pull-right"><a href="#" class="text-mute"><span id="post_share_count_1">200</span> Shares</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="post col-sm-12" id="advertisement_1" style="min-height:250px">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                {% endfor %}
+
+-->
+
+
+
+
+
+
+                <h1 class="float-left"><small>Welcome, {{current_user.firstname}}</small></h1>
+<a href="/dashboard/new" class="btn btn-info float-right" >+ New Post</a>
+    <hr><br>
+    <div class="container" align="center"><h2>Below are your Posts!</h2>
+    {% for post in posts %}
+    
+    <h2><b>{{post.title}}</b></h2>
+    {% if post.author %}
+    <small>By: {{post.author}} </small>
+    {% else %}
+    <small>By:Unknown</small>
+    {% endif %}
+    <small>Date: {{post.date}}</small><br><br>
+    <p><b>{{post.content}}</b></p>
+    <a href="/dashboard/delete/{{post.id}}" style="color: aliceblue;" class="btn btn-success">Delete</a>
+    <a href="/dashboard/edit/{{post.id}}" style="color: aliceblue;" class="btn btn-info">Edit</a>
+    <hr class="style2">
+    <br>
+    {% endfor %}
+     </div>
+
+
+{% if splitf != '' %}
+{% for fr in splitf %}
+{% set post1 = blogposts.query.filter_by(username=fr).order_by(blogposts.date.desc()).all() %}
+
+{% for posts in post1 %}
+
+<h1>{{posts.title}}</h1>
+<h1>{{posts.content}}</h1>
+<h1>{{posts.date}}</h1><br>
+emddd
+
+
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endblock %}

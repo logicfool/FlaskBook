@@ -1,0 +1,10 @@
+{%extends "base.html"%}
+
+{% block body %}
+<form action="/file" method="POST" enctype="multipart/form-data">
+file: <input type="file" name="file">
+<input type="submit" value="Submit">
+</form>
+<img src="{{url_for('static', filename='./pic/yesterday python.jpg')}}" align="middle" />
+
+{% endblock %}

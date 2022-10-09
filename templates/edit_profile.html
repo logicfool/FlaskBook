@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+<form action="/profile/edit/{{current_user.id}}" method="POST">
+    First Name : <input type="text" value="{{current_user.firstname}}" name="firstname"><br>
+    Last Name : <input type="text" value="{{current_user.lastname}}" name="lastname"><br>
+    Email : <input type="email" value="{{current_user.email}}" name="email"><br>
+    About : <input type="text" value="{{current_user.about_me}}" name="about_me"><br>
+    Profile Pic: <input type="file" name="profile_pic">
+    <input type="submit" value="Save" >
+</form>
+
+
+{% endblock %}

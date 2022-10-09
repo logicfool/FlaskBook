@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+{% for req in r %}
+From : {{req.user_from}}
+<form action="/accept/{{req.id}}" method="POST">
+<input type="Submit" value="Accept" name="acccept"></form>
+<form action="/reject/{{req.id}}" method="POST"><input type="Submit" value="Reject" name="reject"></form>
+{% endfor %}
+
+{% endblock %}

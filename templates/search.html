@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">FlaskBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/friends">Friends</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link " href="/logout" tabindex="-1" aria-disabled="false">Logout</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0 float-right" action='/search' method="POST">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <div align="center" class="col" style="width: 50%;margin-left: 25%;">
+  {% for users in search %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col"><embed src="{{users.profile_pic}}" style="border-radius: 25px;" width="50%" height="100%"></div><br>
+          <div class="col "><a href="/user/{{users.username}}" style="top: 100%;float: left; font-size: 20px;">{{ users.firstname }}
+{{users.lastname}}</a></div>
+</div><br>
+{% if current_user.username != users.username %}
+{% if current_user.friend_array != None %}
+          {% if users.username in current_user.friend_array %}
+          <small>You Are Friends</small><br>
+          <!--<a href="/remfriend/{{users.username}}" class="btn btn-danger btn-sm">Remove Friend</a>-->
+          
+{% elif f.query.filter_by(user_from=current_user.username, user_to=users.username).first() == None %}
+<form action="/addfriend/{{users.username}}" method="POST">
+<input type="submit" class="btn btn-success btn-sm" value="Add a Friend" name="addfriend">
+</form>
+{% else %}
+<br>Friend Req Pending
+{% set a=f.query.filter_by(user_from=current_user.username, user_to=users.username).first().id %}<br>
+<a href="/reject/{{a}}">Reject</a><br>
+
+{% endif %}
+{% endif %}
+{% endif %}
+</div></div>
+{% else %}
+N Found!!
+{% endfor %}
+</div>
+{% endblock %}

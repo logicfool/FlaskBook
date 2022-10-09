@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% block head %}
+  <title>FlaskBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <style>
+    .choose_file{
+    position:relative;
+    display:inline-block;    
+	border-radius:8px;
+    border:#ebebeb solid 1px;
+    width:550px; 
+    padding: 4px 6px 4px 8px;
+    font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
+    color: #7f7f7f;
+	background:white
+}
+.choose_file input[type="file"]{
+    -webkit-appearance:none; 
+    position:absolute;
+    top:0; left:0;
+    opacity:0; 
+}
+
+  </style>
+{% endblock %}
+{% block body %}
+  <!-- nav --><!--
+  <nav class="navbar navbar-default bg-">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">FlaskBook</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/dashboard">Home</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>-->
+  <!--
+edit-->
+<!--<div class="navbar-header bg-primary col-md-12 fixed-top">
+  <a class="navbar-brand"id="cent" href="/" style="color: white;">FlaskBook</a>
+</div>-->
+
+<script>
+  /*function openNav() {
+    document.getElementById("mySidenav").style.display = "block";
+    document.getElementById("mySidenav").style.transition = "1s";
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    
+  }
+  
+  function closeNav() {
+    document.getElementById("mySidenav").style.transition = "1s";
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    
+  }*/
+
+    jQuery(document).ready(function($) {
+  $('.comments') .hide()
+$('a[href^="#"]').on('click', function(event) {
+$('.comments') .hide()
+    var target = $(this).attr('href');
+
+    $('.comments'+target).toggle();
+
+});
+});
+
+  </script>
+<div class="main container-fluid">
+ </div>
+  <!-- ./nav -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">FlaskBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/friends">Friends</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link " href="/logout" tabindex="-1" aria-disabled="false">Logout</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0 float-right" action='/search' method="POST">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <!-- main -->
+  <main class="container col-md-12"id="main1" style="margin-top: 30px;">
+    <div class="row" style="margin-left: -60px">
+      <div class="col-md-3">
+        <!-- profile brief -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>{{current_user.firstname}} {{current_user.lastname}}</h4>
+            <p>About: {{current_user.about_me}}</p>
+            <p>Locaion: {{current_user.location}}</p>
+          </div>
+        </div>
+        <!-- ./profile brief -->
+
+        <!-- friend requests -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4><a href="/friendreq">Friend Requests</a></h4>
+            <ul>
+              
+                {% for req in r %}
+                <li>
+                  {%set name=User.query.filter_by(username=req.user_from).first().firstname +" "+User.query.filter_by(username=req.user_from).first().lastname%}
+                <a href="/user/{{req.user_from}}">{{name}}</a>
+                <form action="/accept/{{req.id}}" method="POST">
+                  <small><button type="Submit" value="Accept" name="acccept" class="btn btn-success btn-sm float-left col-sm-6" style="text-align: center;">Accept </button></small></form>
+                  <form action="/reject/{{req.id}}" method="POST"><input type="Submit" value="Reject" name="reject" class="btn btn-danger btn-sm float-right col-sm-6" style=""></form>
+
+                
+              </li><br><hr>
+              {% else %}
+              <h5>No friend Requests ;-)</h5>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <!-- ./friend requests -->
+      </div>
+      <div class="col-md-5">
+        <!-- post form -->
+        {% if msg != '' %}
+        <div class="alert alert-danger">
+          {{msg}}
+        </div>
+        {{ clean }} 
+        {% endif %}
+        {% if msg2 != '' %}
+        <div class="alert alert-danger">
+          {{msg2}}
+        </div>
+        {{ clean }} 
+        {% endif %}
+        
+        <form method="post" action="/dashboard/new" enctype="multipart/form-data">
+          <div class="input-group">
+            <div class="choose_file">
+              <span>Choose File</span>
+              <input name="media" type="file" >
+          </div>
+            <input class="form-control" type="text" name="content" placeholder="Make a post..." name="content"><br><br>
+              <button class="btn btn-success" type="submit" name="post">Post</button>
+
+              
+            </span>
+          </div>
+        </form><hr>
+
+        <!-- ./post form -->
+        {% if splitf != '' %}
+        {% for fr in splitf %}
+        {% set post1 = blogposts.filter_by(username=fr) %}
+        <!-- feed -->
+      <div>
+          <!-- post -->
+          {% for posts in post1 %}
+          <div class="panel panel-default" >
+            <div class="panel-header">
+              <span> <a href="/user/{{posts.username}}">{{posts.author}}</a></span>
+              <span>On {{posts.date}}</span>
+            </div>
+            <div class="panel-body">
+              {% if "media" in posts.content %}
+              {% set media1 = posts.content.split(',') %}
+              {% if media1[2] %}
+              <p>
+                <embed src="{{media1[1]}}" width="100%" height="100%"><br>
+                <b>{{media1[2]}}</b></p>
+                {% else %}
+              <p><embed src="{{media1[1]}}" width="100%" height="100%"><br></p>
+                {% endif %}
+              {% else %}
+                <p>
+                  <b>{{posts.content}}</b>
+                  </p>
+                {% endif %}
+                <!--<p><b>{{posts.content}}</b></p>-->
+            <div class="panel-footer">
+              {% set likes2= likes.query.filter_by(pid=posts.id).first() %}
+              <h5><a href="/addlike/{{posts.id}}">Like</a> {{likes2.total}}</h5> <a href="#expe{{posts.id}}" class="fa fa-caret-down" >Comments</a>  
+              <div>
+                <form action="/dashboard/new_comment/{{posts.id}}" method="POST">
+                  <input type="text" name="comment" placeholder="Enter Your Comment">
+                  <input type="submit" value="Post Comment" class="btn btn-success">
+                </form>
+                <div class="comments" id="expe{{posts.id}}">
+                {% set comment1 = comment.query.filter_by(pid=posts.id).all()  %}
+                {% for comments in comment1 %}
+                <b><a href="/user/{{comments.username}}">{{comments.username}}</a></b> -
+                {{comments.text}}
+                {% if current_user.username == comments.username %}
+                <small><a href="/dashboard/del_comment/{{comments.id}}" style="color: red;">Delete</a></small>
+                {% endif %}<br>
+                {% endfor %}
+              </div>
+              </div>
+            </div>
+            
+            </div>
+             <hr>
+          </div>
+
+          {% endfor %}
+          {% endfor %}
+          {% endif %}
+
+          <!-- ./post -->
+        </div>
+        <!-- ./feed -->
+      </div>
+      <!-- <div class="col-md-3">
+       #add friend
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>add friend</h4>
+            <ul>
+              <li>
+                <a href="#">alberte</a> 
+                <a href="#">[add]</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        ./add friend -->
+
+        <!-- friends
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>friends</h4>
+            <ul>
+              <li>
+                <a href="#">peterpan</a> 
+                <a class="text-danger" href="#">[unfriend]</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        ./friends -->
+      </div>
+    </div>
+  </main>
+  <!-- ./main -->
+
+  <!-- footer -->
+  <footer class="container text-center">
+    <ul class="nav nav-pills pull-right">
+      <li>FlaskBook</li>
+    </ul>
+  </footer>
+  <!-- ./footer -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+{% endblock %}

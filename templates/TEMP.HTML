@@ -1,0 +1,86 @@
+<div>
+    <!-- post -->
+    {% if (posts != NULL) or (posts != "") %}
+    {% for post in posts %}
+    {% if current_user.username == user.username %}
+    <form method="post" action="/dashboard/new">
+      <div class="input-group">
+        <input class="form-control" type="text" name="content" placeholder="Make a post..." name="content">
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="submit" name="post">Post</button>
+        </span>
+      </div>
+    </form><br>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p><b>{{post.content}}</b></p>
+      </div>
+      <div class="panel-footer">
+        <span>Posted On {{post.date}}</span> <br>
+        {% if current_user.username == user.username %}
+        <small><span class="pull-right "><a class="text-danger btn btn-danger text-light btn-sm" href="/dashboard/delete/{{post.id}}">Delete</a></span></small>
+        <!--
+
+          modal
+        -->
+        <!--<Span class="pull-right"><a class="text-success" href="/dashboard/edit/{{post.id}}">Edit</a></Span>-->
+        <div class="container">
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><Span class="pull-right"><a class="text-white" >Edit</a></Span></button>
+        
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <!--
+                  
+                -->
+                <div class="modal-body">
+                  <form action="/dashboard/edit/{{post.id}}" method="POST">
+                    Title: <input type="text" name="title" id="title" value={{post.title}}>
+                    <br>
+                    Post: <textarea class=" form-control rounded-0" style="max-width: 300px;" name="content" id="content" value={{post.content}}></textarea>
+                    <br>
+                    Author: <input type="text" name="author" value={{post.author}}> <br>
+                    <input type="submit" value="Post">
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+        <!--modal-->
+      <hr>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form method="post" action="/dashboard/new">
+          <div class="input-group">
+            <input class="form-control" type="text" name="content" placeholder="Make a post..." name="content">
+            <span class="input-group-btn">
+              <button class="btn btn-success" type="submit" name="post">Post</button>
+            </span>
+          </div><br>
+        </form>
+    <p>Nothing Posted Yet!!!</p>
+    </div>
+    </div>
+    {% endif %}
+    <!-- ./post -->
+  </div>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>All Posts</title> 
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+    <h1 style="display: inline;margin-bottom: 1000px;">How's Your Day?</h1>
+    <hr>
+    {% for post in posts %}
+    <h2><b>{{post.title}}</b></h2>
+    {% if post.author %}
+    <small>By: <a href="user/{{post.id}}">{{post.author}}</a> </small>
+    {% else %}
+    <small>By:Unknown</small>
+    {% endif %}
+    <small>Date: {{post.date}}</small><br><br>
+    <p><b>{{post.content}}</b></p>
+    
+    <hr class="style2">
+    <br>
+    {% endfor %}
+     </div>
+    </div>
+{% endblock %}

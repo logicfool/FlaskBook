@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block head %} 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style_pro.css') }}">
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bt.css') }}">
+<script src="{{ url_for('static', filename='js/bt.js') }}"></script>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <title>Profile</title>
+  {% endblock %}
+
+{% block body %}
+  <!-- nav -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">FlaskBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/friends">Friends</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link " href="/logout" tabindex="-1" aria-disabled="false">Logout</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0 float-right" action='/search' method="POST">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <script>
+    /*function openNav() {
+      document.getElementById("mySidenav").style.display = "block";
+      document.getElementById("mySidenav").style.transition = "1s";
+      document.getElementById("mySidenav").style.width = "250px";
+      document.getElementById("main").style.marginLeft = "250px";
+      
+    }
+    
+    function closeNav() {
+      document.getElementById("mySidenav").style.transition = "1s";
+      document.getElementById("mySidenav").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+      
+    }*/
+    jQuery(document).ready(function($) {
+  $('.comments') .hide()
+$('a[href^="#"]').on('click', function(event) {
+$('.comments') .hide()
+    var target = $(this).attr('href');
+
+    $('.comments'+target).toggle();
+
+});
+});
+    </script>
+  <!-- ./nav -->
+
+  <!-- main -->
+  <main class="container">
+    <div class="row">
+        <div class="panel panel-default"style="height: 350px">
+          <div class="panel-body">
+            <h4>Edit profile</h4>
+            <form method="post" action="/profile/edit1/{{current_user.id}}">
+              <div class="form-group">
+                <h5>About</h5>
+                <input class="form-control" type="text" name="status" placeholder="About Me" value="{{current_user.about_me}}" name="about">
+                <h5>Location</h5>
+                <input class="form-control" type="text" name="location1" placeholder="Location" value="{{current_user.location}}"><br>
+                Private Account: <br>
+                <div class=" col-sm-3">
+                Yes
+                
+                <input type="radio" class="checkbox" name="private" style="width: 15px;height: 15px;" value="yes" {% if current_user.isprivate == 1 %} checked {% endif %}><br>
+                </div>
+          <div class="">
+                NO
+                
+                <input type="radio" class="checkbox" name="private" style="width: 15px;height: 15px;" value="no" {% if current_user.isprivate == 0 %} checked {% endif %}><br>
+              </div>
+                <input class="btn btn-primary" type="submit" name="update_profile" value="Save">
+
+              </div>
+            </form>
+          </div>
+        
+        
+        <!-- edit profile --><!--
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>Edit profile</h4>
+            <form method="post" action="">
+              <div class="form-group">
+                <h4>About</
+                <input class="form-control" type="text" name="status" placeholder="Status" value="{{current_user.about_me}}" name="about">
+              </div>
+
+              <div class="form-group">
+                <input class="form-control" type="text" name="location" placeholder="Location" value="{{current_user.location}}">
+              </div>
+
+              <div class="form-group">
+                <input class="btn btn-primary" type="submit" name="update_profile" value="Save">
+              </div>
+            </form>
+          </div>
+        </div>-->
+        <!-- ./edit profile -->
+      </div>
+      <div class="col-md-6 " style="">
+        <!-- user profile -->
+        <div class="media">
+          <div class="media-left">
+            <img src="{{current_user.profile_pic}}" class="media-object" style="width: 128px; height: 128px; border-radius: 20px;">
+          </div>
+          <div class="media-body">
+            <h2 class="media-heading">{{current_user.firstname}} {{current_user.lastname}}</h2>
+            <p>About Me: {{current_user.about_me}}<br> Location: {{current_user.location}}</p>
+            {% if current_user.isprivate == 1 %}
+            <p><b>Your Acc is Private!</b></p>
+            {% endif %}
+           <!-- <a href="/profile/edit/{{current_user.id}}" >Edit Profile</a>-->
+           <div class="container">
+            <!-- Trigger the modal with a button -->
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal1"><Span class="pull-right"><a >Edit Profile</a></Span></button>
+          
+            <!-- Modal -->
+            <div class="modal fade" id="myModal1" role="dialog">
+              <div class="modal-dialog">
+              
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                  </div>
+                  <!--
+                    
+                  -->
+                  <div class="modal-body">
+                    <form action="/profile/edit/{{current_user.id}}" method="POST" class="form form-class" enctype="multipart/form-data">
+                      <small>First Name : <input type="text" class="form-control"value="{{current_user.firstname}}" name="firstname"></small><br>
+                      Last Name : <input type="text" class="form-control"value="{{current_user.lastname}}" name="lastname"><br>
+                      Username : <input type="text" class="form-control"value="{{current_user.username}}" name="username"><br>
+                      Email : <input type="email" class="form-control"value="{{current_user.email}}" name="email"><br>
+                      About : <input type="text" class="form-control"value="{{current_user.about_me}}" name="about_me"><br>
+                      
+                      <label class="btn btn-default btn-file">
+                        Profile Picture <input type="file" name="file"  class="form-control" style="display: none;"><br>
+                    </label><br>
+                      <input type="submit" value="Save" class="form-control" >
+                  </form>
+                </div>
+                </div>
+                
+              </div>
+            </div>
+            
+          </div>
+          </div>
+        </div>
+        <!-- user profile -->
+
+        <hr>
+
+        <!-- timeline -->
+        <div>
+          <!-- post -->
+          {% if msg != '' %}
+          {{msg}}
+          {{clean}}
+          {% endif %}
+          <form method="post" action="/dashboard/new">
+            <div class="input-group">
+              <input class="form-control" type="text" name="content" placeholder="Make a post..." name="content">
+              <span class="input-group-btn">
+                <button class="btn btn-success" type="submit" name="post">Post</button>
+              </span>
+            </div>
+          </form><br>
+          {% for post in posts %}
+          
+          <div class="panel panel-default">
+            <div class="panel-body">
+                {% if "media" in post.content %}
+                {% set media1 = post.content.split(',') %}
+                {% if media1[2] %}
+                <p>
+                  <embed src="{{media1[1]}}" width="100%" height="100%"><br>
+                  <b>{{media1[2]}}</b></p>
+                  {% else %}
+                <p><embed src="{{media1[1]}}" width="100%" height="100%"><br></p>
+                  {% endif %}
+                {% else %}
+                  <p>
+                    <b>{{post.content}}</b>
+                    </p>
+                  {% endif %}
+              <!--<p><b>{{post.content}}</b></p>-->
+              <small><span>Posted On {{post.date}}</span></small> <br>
+            </div>
+            <div class="panel-footer">
+              
+              {% set likes2= likes.query.filter_by(pid=post.id).first() %}
+              <small><span><a href="/addlike/{{post.id}}" >Like </a>{{likes2.total}}</span></small>
+              <small></small>
+              <a href="#expe{{post.id}}" class="fa fa fa-times closer" >Comments</a>
+              <div>
+                <form action="/dashboard/new_comment/{{post.id}}" method="POST">
+                  <input type="text" name="comment" placeholder="Enter Your Comment">
+                  <input type="submit" value="Post Comment" class="btn btn-success">
+                </form>
+                <div class="comments" id="expe{{post.id}}">
+                {% set comment1 = comment.query.filter_by(pid=post.id).all()  %}
+                {% for comments in comment1 %}
+                <b><a href="/user/{{comments.username}}">{{comments.username}}</a></b> -
+                {{comments.text}}
+                {% if current_user.username == comments.username %}
+                <small><a href="/dashboard/del_comment/{{comments.id}}" style="color: red;">Delete</a></small>
+                {% endif %}<br>
+                {% endfor %}
+              </div>
+              </div>
+              <small><span class="pull-right "><a class="text-danger btn btn-danger text-light btn-sm" href="/dashboard/delete/{{post.id}}">Delete</a></span></small>
+              <!--
+
+                modal
+              -->
+              <!--<Span class="pull-right"><a class="text-success" href="/dashboard/edit/{{post.id}}">Edit</a></Span>-->
+              <div class="container">
+                <!-- Trigger the modal with a button -->
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><Span class="pull-right"><a class="text-white" >Edit</a></Span></button>
+              
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                  
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                      </div>
+                      <!--
+                        
+                      -->
+                      <div class="modal-body">
+                        <form action="/dashboard/edit/{{post.id}}" method="POST">
+                          Title: <input type="text" name="title" id="title" value={{post.title}}>
+                          <br>
+                          Post: <textarea class=" form-control rounded-0" style="max-width: 300px;" name="content" id="content" value={{post.content}}></textarea>
+                          <br>
+                          Author: <input type="text" name="author" value={{post.author}}> <br>
+                          <input type="submit" value="Post">
+                      </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              </div>
+              <!--modal-->
+            <hr>
+            </div>
+          </div>
+          
+          {% else %}
+          <div class="panel panel-default">
+            <div class="panel-body">
+          
+          <p>Nothing Posted Yet!!!</p>
+          </div>
+          </div>
+          {% endfor %}
+          <!-- ./post -->
+        </div>
+        <!-- ./timeline -->
+      </div>
+      
+      <div class="col-md-3">
+        <!-- friends -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>Friends</h4>
+            
+              {% if (friends != None) and (friends != "") %}
+              {% for user in friends %}
+              <ul>
+                
+                {% if (User.query.filter_by(username=user).first().firstname != None) and (User.query.filter_by(username=user).first().lastname != None) %}
+                {% if user != ''%}
+                {% set name=User.query.filter_by(username=user).first().firstname+" "+User.query.filter_by(username=user).first().lastname %}
+
+
+              <li>
+
+                <a href="user/{{user}}">{{ name }}</a> <br>
+                <small><a href="/remfriend/{{user}}" style="color: red;">Remove Friend</a></small> 
+              </li><hr></ul>
+            {% endif %}
+              {% else %}
+            No Friends :-(
+            {% endif %}
+              {% endfor %}
+              {% else %}
+            No Friends :-(
+              {% endif %}
+            
+          </div>
+        </div>
+        <!-- ./friends -->
+      </div>
+    </div>
+  </main>
+  <!-- ./main -->
+
+  <!-- footer -->
+  <footer class="container text-center">
+    <ul class="nav nav-pills pull-right">
+      <li>FlaskBook</li>
+    </ul>
+  </footer>
+  <!-- ./footer -->
+{% endblock %}
