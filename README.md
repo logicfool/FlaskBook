@@ -10,10 +10,10 @@ A Facebook clone purely based on Flask
 
 
 <b>Languages & Database Used</b>:
-  1. Python(The God)
-  2. Flask(The Servant)
-  3. Html - CSS (Interior Designer) (ik people do not consider it as a language but yeah)
-  4. Sqlite (The library to store info)
+  1. Python
+  2. Flask
+  3. Html - CSS 
+  4. Sqlite
 
 <b>Features</b>:
   1. User-Login and Registration 
